@@ -1,0 +1,8 @@
+class Deck:
+	def __init__(self,deck):
+		self.__playerCards = []
+		self.__communityCards = []
+		self.__cardDeck = deck
+		
+	def setPlayerCards(self):
+		
