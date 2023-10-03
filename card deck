@@ -7,15 +7,17 @@ class Card:
 	
 	
 	def createCard(self):
-		self.__cards = [self.Deck(value, suit) for value in self.card_values for suit in self.card_suits]
+		self.__cards = [self.Card(value, suit) for value in self.__values for suit in self.__suits]
 	
 	def getCard(self):
-		return [self.__value, self.__suit]
+		return self.__cards
 	
 	def getCards(self):
 		return self.__cards
 		
 		
 	
-deck1 = Deck()
-deck1.getCards()
+card1 = Card(0,0)
+card1.createCard()
+card1.getCards()
+
