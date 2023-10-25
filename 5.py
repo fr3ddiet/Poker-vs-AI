@@ -2,7 +2,7 @@ from random import *
 
 class Card:
 	def __init__(self, value, suit):
-		self.__suit = suit
+		self.__suit = suit 
 		self.__value = value
 	
 	def getCard(self):
@@ -24,15 +24,11 @@ class Deck:
 	def returnDeck(self):
 		return self.__allcards
 		
-	def setPlayerCards(self):
-		self.__p1 = [self.__allcards[0], self.__allcards[1]]
-		self.__ai2 = [2,3]
-		
 	def getp1cards(self):
-		return self.__p1
-		
-	def ai2cards(self):
-		return self.__allcards[self.__ai2]
+		return [self.__allcards[0].getCard() , self.__allcards[1].getCard()]
+	
+	def getaicards(self):
+		return [self.__allcards[2].getCard(), self.__allcards[3].getCard()]
 		
 	def setCommunityCards(self):
 		self.__comcards = [self.__allcards[4].getCard(), self.__allcards[5].getCard(), self.__allcards[5].getCard(), self.__allcards[5].getCard(), self.__allcards[5].getCard()]
@@ -50,4 +46,6 @@ for x in range(len(deck1.returnDeck())):
 print()
 #print(deck1.returnDeck()[0].getCard(),deck1.returnDeck()[1].getCard())
 
+print(deck1.getp1cards()[0])
 print(deck1.getp1cards())
+
