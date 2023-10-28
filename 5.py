@@ -30,8 +30,13 @@ class Deck:
 	def getaicards(self):
 		return [self.__allcards[2].getCard(), self.__allcards[3].getCard()]
 		
-	def setCommunityCards(self):
-		self.__comcards = [self.__allcards[4].getCard(), self.__allcards[5].getCard(), self.__allcards[5].getCard(), self.__allcards[5].getCard(), self.__allcards[5].getCard()]
+	def getCommunityCards(self):
+		self.__comcards = []
+		x = 4
+		while x < 9:
+			self.__comcards.append(self.__allcards[x].getCard())
+			x+=1
+		return self.__comcards
 		
 
 
@@ -46,6 +51,7 @@ for x in range(len(deck1.returnDeck())):
 print()
 #print(deck1.returnDeck()[0].getCard(),deck1.returnDeck()[1].getCard())
 
-print(deck1.getp1cards()[0])
-print(deck1.getp1cards())
 
+print(deck1.getp1cards())
+print(deck1.getaicards())
+print(deck1.getCommunityCards())
