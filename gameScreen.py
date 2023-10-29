@@ -48,11 +48,15 @@ class gameScreen:
         print("Fold")
         pass
 
+    def displayBalance(self):
+        screen.blit(self.__font.render(str(self.__player1bal), True, (255,255,255), (0,0,255)),(460,425))
+        screen.blit(self.__font.render(str(self.__player2bal), True, (255,255,255), (0,0,255)),(460,175))
 
     def displayCards(self):
         self.__font = font.Font('freesansbold.ttf',35) # choosing the font and size
 
         draw.rect(screen, (0,0,0), Rect(425,478,150,80), 2)
+        draw.rect(screen, (0,0,0), Rect(425,28,150,80), 2)
         screen.blit(self.__font.render(str(deck1.getp1cards()[0]), True, (255,255,255), (0,0,255)),(445,500)) #blit first player card from the deck class
         screen.blit(self.__font.render(str(deck1.getp1cards()[1]), True, (255,255,255), (0,0,255)),(510,500)) # blit second player card from the deck class
 
@@ -64,6 +68,7 @@ class gameScreen:
         while not stopped:
             screen.fill((0,0,255))
             self.displayCards()
+            self.displayBalance()
 
             for e in event.get():
                 if e.type == QUIT:
@@ -85,10 +90,12 @@ class gameScreen:
             self.Button(1500,700,'Fold')
 
 
+
             display.update()
             clock.tick(60)
 
 screen1 = gameScreen(displayw,displayh)
 screen1.main()
+
 
 
