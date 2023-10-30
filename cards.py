@@ -34,7 +34,7 @@ class Deck:
 		self.__comcards = []
 		x = 4
 		while x < 9:
-			self.__comcards.append(self.__allcards[x].getCard())
+			self.__comcards.append(self.__allcards[x].getCard()[0]+self.__allcards[x].getCard()[1])
 			x+=1
 		return self.__comcards
 		
