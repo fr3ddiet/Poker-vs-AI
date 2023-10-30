@@ -25,10 +25,10 @@ class Deck:
 		return self.__allcards
 		
 	def getp1cards(self):
-		return [self.__allcards[0].getCard() , self.__allcards[1].getCard()]
+		return [self.__allcards[0].getCard()[0] + self.__allcards[0].getCard()[1] , self.__allcards[1].getCard()[0] + self.__allcards[1].getCard()[1]]
 	
 	def getaicards(self):
-		return [self.__allcards[2].getCard(), self.__allcards[3].getCard()]
+		return [self.__allcards[2].getCard()[0] + self.__allcards[2].getCard()[1], self.__allcards[3].getCard()[0] + self.__allcards[3].getCard()[1]]
 		
 	def getCommunityCards(self):
 		self.__comcards = []
