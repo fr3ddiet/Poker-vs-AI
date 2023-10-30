@@ -73,11 +73,14 @@ class gameScreen:
     def displayRound(self):
         screen.blit(self.__font.render("Round: "+str(self.__round), True, white, green),(150+2,100+2)) # bilts the round number in the top left of the green rectangle
 
+    def displayCard(self,text,x,y):
+        screen.blit(self.__font.render(str(text), True, white, grey),(x,y))
+        
     def displayBalance(self):
         screen.blit(self.__font.render(str(self.__player1bal), True, white, green),(450+22,412)) #blits the player 1 balance to tge screen
         screen.blit(self.__font.render(str(self.__player2bal), True, white, green),(450+22,160)) #blits the player 2 balance to the screen
 
-    def displayCards(self):
+    def displayPlayerCards(self):
         self.__font = font.Font('freesansbold.ttf',32) # choosing the font and size
 
         draw.rect(screen, grey, Rect(425,460,150,80)) # draws grey rectangle where player cards are
@@ -86,8 +89,20 @@ class gameScreen:
         draw.rect(screen, white, Rect(425,460,150,80), 2) # draws white outline around grey player rectangle
         draw.rect(screen, white, Rect(425,60,150,80), 2) # draws white outline around grey ai rectangle
 
-        screen.blit(self.__font.render(str(deck1.getp1cards()[0]), True, white, grey),(445,485)) #blit first player card from the deck class
-        screen.blit(self.__font.render(str(deck1.getp1cards()[1]), True, white, grey),(510,485)) # blit second player card from the deck class
+        self.displayCard((deck1.getp1cards()[0]),445,485)  #blit first player card from the deck class
+        self.displayCard((deck1.getp1cards()[1]),510,485) # blit second player card from the deck class
+        
+
+    def displayTableCards(self):
+        if self.__round >= 2:
+                self.displayCard((deck1.getCommunityCards()[0]),445,550)
+                self.displayCard((deck1.getCommunityCards()[1]),510,550)
+                self.displayCard((deck1.getCommunityCards()[2]),510,550)
+        elif self.__round >= 3:
+                self.displayCard((deck1.getCommunityCards()[3]),445,550)  
+
+        elif self.__round >=4:
+                self.displayCard((deck1.getCommunityCards()[4]),510,550)
 
     def main(self):
         #variables
@@ -98,7 +113,7 @@ class gameScreen:
             screen.fill(blue)
             draw.rect(screen, green, Rect(150,100,700,400))
             draw.rect(screen, white, Rect(150,100,700,400),2)
-            self.displayCards()
+            self.displayPlayerCards()
             self.displayBalance()
 
             for e in event.get():
