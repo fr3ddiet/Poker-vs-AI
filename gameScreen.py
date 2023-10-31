@@ -76,17 +76,19 @@ class gameScreen:
 
     def handleFold(self):
         print("Fold")
+        self.__playerTurn +=1
 
     def aiturn(self):
         if self.__playerTurn % 2 == 1:
             self.__playerTurn+=1
 
     def displayRound(self):
-        screen.blit(self.__font.render("Round: "+str(self.__round), True, white, green),(150+2,100+2)) # bilts the round number in the top left of the green rectangle
+        screen.blit(self.__font.render("Round: "+str(self.__round), True, white, green),(150+5,100+5)) # bilts the round number in the top left of the green rectangle
         
     def displayBalance(self):
         screen.blit(self.__font.render(str(self.__player1bal), True, white, green),(450+22,412)) #blits the player 1 balance to tge screen
         screen.blit(self.__font.render(str(self.__player2bal), True, white, green),(450+22,160)) #blits the player 2 balance to the screen
+        screen.blit(self.__font.render(str(self.__pot), True, white, green),(205,275))
 
     def displayPlayerCards(self):
         self.__font = font.Font('freesansbold.ttf',32) # choosing the font and size of the text
