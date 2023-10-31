@@ -42,16 +42,16 @@ class Deck:
 
 deck1 = Deck()
 deck1.createDeck()
-print(deck1.returnDeck())
+#print(deck1.returnDeck())
 
 
-for x in range(len(deck1.returnDeck())):
-	print(deck1.returnDeck()[x].getCard())
+#for x in range(len(deck1.returnDeck())):
+	#print(deck1.returnDeck()[x].getCard())
 
-print()
+#print()
 #print(deck1.returnDeck()[0].getCard(),deck1.returnDeck()[1].getCard())
 
 
-print(deck1.getp1cards())
-print(deck1.getaicards())
-print(deck1.getCommunityCards())
+#print(deck1.getp1cards())
+#print(deck1.getaicards())
+#print(deck1.getCommunityCards())
