@@ -102,6 +102,8 @@ class gameScreen:
                 self.__playerTurn +=1
                 self.__hasRaised = 0
 
+        self.__bet  = 0
+
         print("Raise")
 
     def handleFold(self):
