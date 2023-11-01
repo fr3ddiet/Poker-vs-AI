@@ -31,6 +31,8 @@ class gameScreen:
         
         #handle all the attributes for the chips 
         self.__pot = 0
+        self.__bet = 0
+        self.__hasRaised = 0 
         self.__player1bal = 500
         self.__player2bal = 500
 
@@ -40,24 +42,36 @@ class gameScreen:
                 self.handleCall() # if the person clicks on the top botton it will do the call function
 
             if 750 <= self.__mouse[0] <= 750+140 and 550 // 2 <= self.__mouse[1] <= 550 // 2 +40: 
-                self.handleRaise() # if the person clicks the middle button it will do the raise function
+                self.handleRaise()# if the person clicks the middle button it will do the raise function
 
             if 750 <= self.__mouse[0] <= 750+140 and 775 // 2 <= self.__mouse[1] <= 775 // 2+40: 
                 self.handleFold() # if the person clicks the bottom button it will do the fold function
 
-    def Button(self,x,y,text):
+            if 655 <= self.__mouse[0] <= 655 + 75 and 525 <= self.__mouse[1] <= 525 + 50: 
+                self.__bet = 25
+                self.handleRaise()
+
+            if 770 <= self.__mouse[0] <= 770 + 75 and 525 <= self.__mouse[1] <= 525 + 50: 
+                self.__bet = 50
+                self.handleRaise()
+
+            if 885 <= self.__mouse[0] <= 885 + 75 and 525 <= self.__mouse[1] <= 525 + 50: 
+                self.__bet = 100
+                self.handleRaise()
+
+    def Button(self,x,y,text,x2,y2):
         if self.__playerTurn % 2 == 0: # if its the players turn
-            if x <= self.__mouse[0] <= x + 140 and y <= self.__mouse[1] < y + 40: # if the mouse is hovering over the button make the background colour of the button darker
-                draw.rect(screen, (150,150,150), [x , y, 140, 50])
-                draw.rect(screen, white, [x , y, 140, 50],2)
+            if x <= self.__mouse[0] <= x + x2 and y <= self.__mouse[1] < y + y2: # if the mouse is hovering over the button make the background colour of the button darker
+                draw.rect(screen, (150,150,150), [x , y, x2, y2])
+                draw.rect(screen, white, [x , y, x2, y2],2)
             else: # make the background colour of the button lighter when it isnt hovered over
-                draw.rect(screen, grey, [x , y, 140, 50])
-                draw.rect(screen, white, [x , y, 140, 50],2)
+                draw.rect(screen, grey, [x , y, x2, y2])
+                draw.rect(screen, white, [x , y, x2, y2],2)
 
             screen.blit(self.__font.render(text, True, white), (x + 20, y + 10)) # blits text to screen depending on function text input
         else: # if its not the players turn grey out the buttons indiciating they cannot be used as you cannot make a decision for the ai
-            draw.rect(screen, grey, [x , y, 140, 50])
-            draw.rect(screen, white, [x , y, 140, 50],2)
+            draw.rect(screen, grey, [x , y, x2, y2])
+            draw.rect(screen, white, [x , y, x2, y2],2)
 
 
     def handleCall(self):
@@ -71,12 +85,31 @@ class gameScreen:
 
         self.__playerTurn +=1 # increments the turn attribute inidicating its no longer hte players turn as they have made a choice
 
+    def raiseButton(self):
+        if self.__hasRaised == 1:
+            self.Button(655,525,"25",75,50)
+            self.Button(770,525,"50",75,50)
+            self.Button(885,525,"100",100,50)
+
     def handleRaise(self):
+        # create 3 button for the different raises they only appear when raise is clicked once an option is selected the buttons go away
+        self.__hasRaised = 1
+
+        if self.__player1bal >= self.__bet:
+            self.__pot+= self.__bet 
+            self.__player1bal -= self.__bet
+            if self.__bet > 0:
+                self.__playerTurn +=1
+                self.__hasRaised = 0
+
         print("Raise")
 
     def handleFold(self):
         print("Fold")
-        self.__playerTurn +=1
+        deck1.increaseCount() #this is used to change the cards in the deck class
+        self.__playerTurn = 0  # resets to player1 going first
+        self.__player2bal += self.__pot  # as player2 won the value of the pot is added to their balance
+        self.__pot = 0 # the pot is then reset to 0 as it had been moved
 
     def aiturn(self):
         if self.__playerTurn % 2 == 1:
@@ -98,7 +131,7 @@ class gameScreen:
 
         draw.rect(screen, white, Rect(425,460,150,80), 2) # draws white outline around grey player rectangle
         draw.rect(screen, white, Rect(425,60,150,80), 2) # draws white outline around grey ai rectangle
-         
+        
         screen.blit(self.__font.render(str(deck1.getp1cards()[0]), True, white, grey),(445,485)) #blit first player card from the deck class
         screen.blit(self.__font.render(str(deck1.getp1cards()[1]), True, white, grey),(510,485)) # blit second player card from the deck class
         
@@ -150,9 +183,10 @@ class gameScreen:
                         self.aiturn()
                     
             # uses the button function to make the 3 call, raise and fold buttons
-            self.Button(750,163,'Call') 
-            self.Button(750,275,'Raise')
-            self.Button(750,388,'Fold')
+            self.Button(750,163,'Call',150,50) 
+            self.Button(750,275,'Raise',150,50)
+            self.Button(750,388,'Fold',150,50) 
+            self.raiseButton()
 
             # sets the clock and updates the display
             clock.tick(60)
