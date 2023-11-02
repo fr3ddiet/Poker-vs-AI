@@ -42,6 +42,7 @@ class gameScreen:
                 self.handleCall() # if the person clicks on the top botton it will do the call function
 
             if 750 <= self.__mouse[0] <= 750+140 and 550 // 2 <= self.__mouse[1] <= 550 // 2 +40: 
+                self.__bet = 0
                 self.handleRaise()# if the person clicks the middle button it will do the raise function
 
             if 750 <= self.__mouse[0] <= 750+140 and 775 // 2 <= self.__mouse[1] <= 775 // 2+40: 
@@ -98,7 +99,7 @@ class gameScreen:
         if self.__player1bal >= self.__bet:
             self.__pot+= self.__bet 
             self.__player1bal -= self.__bet
-            if self.__bet > 0:
+            if self.__bet > 0 :
                 self.__playerTurn +=1
                 self.__hasRaised = 0
 
