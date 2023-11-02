@@ -96,10 +96,10 @@ class gameScreen:
         # create 3 button for the different raises they only appear when raise is clicked once an option is selected the buttons go away
         self.__hasRaised = 1
 
-        if self.__player1bal >= self.__bet:
+        if self.__player1bal >= self.__bet: # makes sure the player has enough balance to make the bet
             self.__pot+= self.__bet 
             self.__player1bal -= self.__bet
-            if self.__bet > 0 :
+            if self.__bet > 0 : # as the function is called multiple times it only increments the player turn once they click on the amount they want to raise not just the raise button
                 self.__playerTurn +=1
                 self.__hasRaised = 0
 
