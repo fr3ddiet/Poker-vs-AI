@@ -110,6 +110,9 @@ class gameScreen:
     def handleFold(self):
         print("Fold")
         deck1.increaseCount() #this is used to change the cards in the deck class
+        print(deck1.getp1cards())
+        print(deck1.getaicards())  
+        print(deck1.getCommunityCards())
         self.__playerTurn = 0  # resets to player1 going first
         self.__player2bal += self.__pot  # as player2 won the value of the pot is added to their balance
         self.__pot = 0 # the pot is then reset to 0 as it had been moved
