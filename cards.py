@@ -49,7 +49,6 @@ class Deck: #class of all cards
 
     # same processes as getting the player cards, but it creates an array which has 5 cards in 
     # compared to 2 cards 
-
     def getCommunityCards(self): 
         self.__comcards = [] 
         x = 4 
