@@ -99,11 +99,11 @@ class gameScreen:
         if self.__player1bal >= self.__bet: # makes sure the player has enough balance to make the bet
             self.__pot+= self.__bet 
             self.__player1bal -= self.__bet
-            if self.__bet > 0 : # as the function is called multiple times it only increments the player turn once they click on the amount they want to raise not just the raise button
+            if self.__bet > 0: # as the function is called multiple times it only increments the player turn once they click on the amount they want to raise not just the raise button
                 self.__playerTurn +=1
                 self.__hasRaised = 0
 
-        self.__bet  = 0
+        #self.__bet  = 0
 
         print("Raise")
 
@@ -120,6 +120,15 @@ class gameScreen:
     def aiturn(self):
         if self.__playerTurn % 2 == 1:
             self.__playerTurn+=1
+
+    def getPot(self):
+        return self.__pot
+
+    def getBet(self):
+        return self.__bet
+
+    def getRound(self):
+        return self.__round
 
     def displayRound(self):
         screen.blit(self.__font.render("Round: "+str(self.__round), True, white, green),(150+5,100+5)) # bilts the round number in the top left of the green rectangle
