@@ -1,7 +1,7 @@
 from random import * 
 
 class Card:  
-    def __init__(self, value, suit): #class for each card 
+	def __init__(self, value, suit): #class for each card 
         self.__suit = suit #attributes needed for each card 
         self.__value = value 
 
