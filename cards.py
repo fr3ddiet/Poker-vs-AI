@@ -1,7 +1,7 @@
 from random import * 
 
 class Card:  
-	def __init__(self, value, suit): #class for each card 
+    def __init__(self, value, suit): #class for each card 
         self.__suit = suit #attributes needed for each card 
         self.__value = value 
 
@@ -56,7 +56,10 @@ class Deck: #class of all cards
             self.__comcards.append(self.__allcards[self.__count + x].getCard() 
             [0]+self.__allcards[self.__count + x].getCard()[1]) 
             x+=1 
-        return self.__comcards 
+        return self.__comcards
+
+    def formatAI(self):
+	    pass
 
 #create object of deck class and use main method to create the actual deck 
 deck1 = Deck() 
