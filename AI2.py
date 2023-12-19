@@ -1,13 +1,16 @@
-from cards import *
+from format import *
 
 class AI:
     def __init__(self,j):
         self.__Cards = j
         #self.__minbet = screen1.getBet()
-        #self.__eval : Format
+        self.__eval = f1.getEval()
 
         self.__value_count = {} # dictionary to count repeating values and suits 
         self.__suit_count = {}
+
+    def getEval(self):
+        return self.__eval
 
     def findMostCommon(self,cards1):
         self.__multiple = False # If there are no repeating values, it should return the highest value
@@ -53,8 +56,8 @@ class AI:
         self.__count = 0  # check start of array
         self.__count2 = 0 # check end of array
 
-        first = self.__cardvalues[0]
-        last = self.__cardvalues[-1]
+        first = self.__cardvalues[0] # first value of array
+        last = self.__cardvalues[-1] # last value of array
 
         for item in self.__cardvalues:
             if abs(first - item) < 5:  # if the differnce is less than 5 the cards are apart of a potential straight
@@ -77,18 +80,19 @@ class AI:
         '''
 
         if self.findMostCommon(self.__Cards)[1] == 4: # 4 of a kind rank = 3
-            return -1, 3
+            return -1, 3 # outs are -1 because theyre are no cards to improve this hand
         
-        elif self.findMostCommon(self.__Cards)[1] == 3:
-            self.__Cards2 = []
-            for item in self.__Cards:
-                if item[0] != self.findMostCommon()[0]:
-                    self.__Cards2.append(item)
+        elif self.findMostCommon(self.__Cards)[1] == 3: # this is checking for if the hand is a 'full house' or just 3 of a kind
+            self.__Cards2 = [] #a full house is a 3 of a kind and a 2 of a kind
+            for item in self.__Cards: # loop over each card
+                if item[0] != self.findMostCommon()[0]: # if the card is not the same value as the most common
+                    self.__Cards2.append(item) # adds it to a new array
 
-            if self.findMostCommon(self.__Cards2)[1] == 2: #full house rank = 4
-                return -1 
+            if self.findMostCommon(self.__Cards2)[1] == 2: # if this new array has two cards with the same value
+                return -1 # if must be a full house and the rank = 4
             else:
-                return 3 * len(self.__Cards2)
+                return 3 * len(self.__Cards2) # else they need this many outs for a full house
+                # maybe take into account if they want o get a 4 of a kind or not
 
         elif self.findMostCommon(self.__Cards)[3] == 5: # flush rank = 5
             return -1
@@ -107,6 +111,8 @@ class AI:
 j = ["2C","3H","4S","JH","JC"]
 ai1 = AI(j)
 print(ai1.findOuts())
+
+print(ai1.getEval())
 
 # pair : 4 of a kind , one-overcard(unsuited) : 4 of a kind, straight possible (how many cards are in a 5 card range): straight
 # 2 pair : full house, 3 same card : full house / 4 of a kind,flush draw (how many of suit): flush 
