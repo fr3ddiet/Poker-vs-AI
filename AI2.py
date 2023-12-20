@@ -6,7 +6,8 @@ class AI:
         #self.__minbet = screen1.getBet()
         self.__eval = f1.getEval()
 
-        self.__value_count = {} # dictionary to count repeating values and suits 
+        # dictionary to count repeating values and suits 
+        self.__value_count = {}
         self.__suit_count = {}
 
     def getEval(self):
@@ -17,6 +18,7 @@ class AI:
 
         for item in cards1: # loop over the cards
             cardValue = item[0] # ["2C"] so value is first pos
+            
             if cardValue in self.__value_count: # if it exists as a key in the dictionary add one to the dictionary value
                 self.__value_count[cardValue] +=1
                 self.__multiple = True
@@ -36,7 +38,7 @@ class AI:
             #get method returns the dictionary value which is assosiated with the key.
             #max method then returns the largest dictionary value
 
-        max_suit = max(self.__suit_count, key = self.__suit_count.get) # 
+        max_suit = max(self.__suit_count, key = self.__suit_count.get) 
 
         return max_value, int(self.__value_count[max_value]), max_suit, int(self.__suit_count[max_suit])
 
