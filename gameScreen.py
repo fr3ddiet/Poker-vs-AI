@@ -28,6 +28,7 @@ class gameScreen:
         self.__displayh = displayh 
 
         self.__playerTurn = 0 # used to indicate whose turn it is 
+        self.__currentCards = []
         
         #handle all the attributes for the chips 
         self.__pot = 0
@@ -127,8 +128,8 @@ class gameScreen:
     def getBet(self):
         return self.__bet
 
-    def getRound(self):
-        return self.__round
+    def getTableCards(self):
+        return self.__currentCards
 
     def displayRound(self):
         screen.blit(self.__font.render("Round: "+str(self.__round), True, white, green),(150+5,100+5)) # bilts the round number in the top left of the green rectangle
@@ -156,12 +157,15 @@ class gameScreen:
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[0]), True, white, green),(330 + 28,275))
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[1]), True, white, green),(390 + 28,275))
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[2]), True, white, green),(450 + 28,275))
+            self.__currentCards = deck1.getCommunityCards()[:2]
         
         if self.__round >= 3:
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[3]), True, white, green),(510 + 28,275))
+            self.__currentCards = deck1.getCommunityCards()[:3]
 
         if self.__round >=4:
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[4]), True, white, green),(570 + 28,275))
+            self.__currentCards = deck1.getCommunityCards()[0:4]
 
     def main(self):
         #variable to control game loop
@@ -170,6 +174,7 @@ class gameScreen:
         while not stopped:
             #sets round number based off how many player turns have occured
             self.__round = 1 + self.__playerTurn // 2
+            
 
             #sets up background
             screen.fill(blue) #background colour
