@@ -14,7 +14,7 @@ class Format:
         return [rank_order.index(cards[0])] # returns the order as an index so they can be sorted in ascending order
 
     def orderCards(self):
-        self.__allcards.sort(key=self.cardRankKey) # sorts the 2 cards using the key
+        self.__allcards.sort(key=self.cardRankKey) # sorts the cards using the key
         return self.__allcards
 
     def formatCards(self): 
