@@ -3,22 +3,26 @@ from cards import *
 class Format: 
     def __init__(self,filename,mode,currentCards,pair): #Sets up constructor with filename and mode it will be opened with
         self.__file = open(filename,mode) 
-        self.__pairhand = pair # gets the ai's cards from the cards class
-        self.__allcards = currentCards + self.__pairhand
+        self.__pairhand = pair  # gets the ai's cards from the cards class
+        self.__allcards = currentCards  + self.__pairhand
 
     def getCard(self):
-        return self.__allcards # returns the ai's 2 cards
+        return self.__allcards # returns the ai's cards
 
     def cardRankKey(self,cards): 
-        rank_order = '23456789TJQKA'# poker order of cards
+        rank_order = '23456789TJQKA' # poker order of cards
         return [rank_order.index(cards[0])] # returns the order as an index so they can be sorted in ascending order
-
+    
+    def cardRankKeyDescending(self,cards):
+        rank_order = 'AKQJT98765432' # poker order of cards
+        return [rank_order.index(cards[0])]
+    
     def orderCards(self):
         self.__allcards.sort(key=self.cardRankKey) # sorts the 2 cards using the key
         return self.__allcards
 
     def formatCards(self): 
-        self.__pairhand.sort(key=self.cardRankKey)
+        self.__pairhand.sort(key=self.cardRankKeyDescending)
 
         if self.__pairhand[0][1] == self.__pairhand[1][1]: # if the suits are equal
             add = "s" # they are suited
@@ -36,11 +40,7 @@ class Format:
                 return line # returns the evaluation
 
 #Create object of class and define file name and type
+k = []
+f1 = Format('cardeval.txt',"r",k,['QD', '9C'] )
 
-f1 = Format('cardeval.txt',"r",[], deck1.getaicards())
-
-#print(f1.getCard())
-#print(f1.orderCards())
-
-#print(f1.formatCards())
-#print(f1.getEval()) # return the eval of the 2 cards.
+print(f1.getEval())
