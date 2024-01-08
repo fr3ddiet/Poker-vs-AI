@@ -1,9 +1,9 @@
 from cards import *
 
 class Format: 
-    def __init__(self,filename,mode,currentCards): #Sets up constructor with filename and mode it will be opened with
+    def __init__(self,filename,mode,currentCards,pair): #Sets up constructor with filename and mode it will be opened with
         self.__file = open(filename,mode) 
-        self.__pairhand = deck1.getaicards() # gets the ai's cards from the cards class
+        self.__pairhand = pair # gets the ai's cards from the cards class
         self.__allcards = currentCards + self.__pairhand
 
     def getCard(self):
@@ -37,7 +37,7 @@ class Format:
 
 #Create object of class and define file name and type
 
-f1 = Format('cardeval.txt',"r",[])
+f1 = Format('cardeval.txt',"r",[], deck1.getaicards())
 
 #print(f1.getCard())
 #print(f1.orderCards())
