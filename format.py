@@ -10,7 +10,7 @@ class Format:
         return self.__allcards # returns the ai's 2 cards
 
     def cardRankKey(self,cards): 
-        rank_order = 'AKQJT98765432'# poker order of cards
+        rank_order = '23456789TJQKA'# poker order of cards
         return [rank_order.index(cards[0])] # returns the order as an index so they can be sorted in ascending order
 
     def orderCards(self):
