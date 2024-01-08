@@ -16,7 +16,7 @@ class AI:
         self.__suit_count = {}
 
         for item in cards1: # loop over the cards
-            cardValue = item[0] # ["2C"] so value is first pos
+            cardValue = item[0] # example card ["2C"] so value is first pos
             
             if cardValue in self.__value_count: # if it exists as a key in the dictionary add one to the dictionary value
                 self.__value_count[cardValue] +=1
@@ -31,7 +31,7 @@ class AI:
                 self.__suit_count[suit] = 1
 
         if self.__multiple == False:
-            max_value = list(self.__value_count.keys())[-1] # last value
+            max_value = list(self.__value_count.keys())[-1] # last value as its largest
         else:
             max_value = max(self.__value_count, key = self.__value_count.get) # 
             #get method returns the dictionary value which is assosiated with the key.
