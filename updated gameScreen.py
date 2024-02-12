@@ -1,5 +1,5 @@
 # imports and initalise pygame
-from DATA import *
+from Data import *
 from pygame import *
 from cards import *
 init()
