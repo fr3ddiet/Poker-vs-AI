@@ -1,4 +1,5 @@
 # imports and initalise pygame
+from DATA import *
 from pygame import *
 from cards import *
 init()
@@ -27,42 +28,34 @@ class gameScreen:
         self.__displayw = displayw
         self.__displayh = displayh 
 
-        self.__playerTurn = 0 # used to indicate whose turn it is 
         self.__currentCards = []
         
-        #handle all the attributes for the chips 
-        self.__pot = 0
-        self.__bet = 0
-        self.__hasRaised = 0 
-        self.__player1bal = 500
-        self.__player2bal = 500
-
     def handleMouse(self):
-        if self.__playerTurn % 2 == 0: # only allow the buttons to work if its the players turn
+        if data1.getTurn() % 2 == 0: # only allow the buttons to work if its the players turn
             if 750 <= self.__mouse[0] <= 750+140 and 325 // 2  <= self.__mouse[1] <= 325 // 2 + 40: 
-                self.handleCall() # if the person clicks on the top botton it will do the call function
+                data1.handleCall() # if the person clicks on the top botton it will do the call function
 
             if 750 <= self.__mouse[0] <= 750+140 and 550 // 2 <= self.__mouse[1] <= 550 // 2 +40: 
-                self.__bet = 0
-                self.handleRaise()# if the person clicks the middle button it will do the raise function
+                data1.setBet(0)
+                data1.handleRaise()# if the person clicks the middle button it will do the raise function
 
             if 750 <= self.__mouse[0] <= 750+140 and 775 // 2 <= self.__mouse[1] <= 775 // 2+40: 
-                self.handleFold() # if the person clicks the bottom button it will do the fold function
+                data1.handleFold() # if the person clicks the bottom button it will do the fold function
 
             if 655 <= self.__mouse[0] <= 655 + 75 and 525 <= self.__mouse[1] <= 525 + 50: 
-                self.__bet = 25
-                self.handleRaise()
+                data1.setBet(25)
+                data1.handleRaise()
 
             if 770 <= self.__mouse[0] <= 770 + 75 and 525 <= self.__mouse[1] <= 525 + 50: 
-                self.__bet = 50
-                self.handleRaise()
+                data1.setBet(50)
+                data1.handleRaise()
 
             if 885 <= self.__mouse[0] <= 885 + 75 and 525 <= self.__mouse[1] <= 525 + 50: 
-                self.__bet = 100
-                self.handleRaise()
+                data1.setBet(100)
+                data1.handleRaise()
 
     def Button(self,x,y,text,x2,y2):
-        if self.__playerTurn % 2 == 0: # if its the players turn
+        if data1.getTurn() % 2 == 0: # if its the players turn
             if x <= self.__mouse[0] <= x + x2 and y <= self.__mouse[1] < y + y2: # if the mouse is hovering over the button make the background colour of the button darker
                 draw.rect(screen, (150,150,150), [x , y, x2, y2])
                 draw.rect(screen, white, [x , y, x2, y2],2)
@@ -75,58 +68,15 @@ class gameScreen:
             draw.rect(screen, grey, [x , y, x2, y2])
             draw.rect(screen, white, [x , y, x2, y2],2)
 
-
-    def handleCall(self):
-        self.__bet = (505 - self.__player2bal) # sets the minimum bet to 5 chips
-        if self.__player1bal >= self.__bet: # makes sure the player has enough chips in the bank
-            self.__pot += self.__bet 
-            self.__player1bal -= self.__bet
-            print("Call") # adds the bet to the pot and subtracts it from their balance
-        else:
-            print("no money")
-
-        self.__playerTurn +=1 # increments the turn attribute inidicating its no longer hte players turn as they have made a choice
-
     def raiseButton(self):
-        if self.__hasRaised == 1:
+        if data1.getRaised() == 1:
             self.Button(655,525,"25",75,50)
             self.Button(770,525,"50",75,50)
             self.Button(885,525,"100",100,50)
 
-    def handleRaise(self):
-        # create 3 button for the different raises they only appear when raise is clicked once an option is selected the buttons go away
-        self.__hasRaised = 1
-
-        if self.__player1bal >= self.__bet: # makes sure the player has enough balance to make the bet
-            self.__pot+= self.__bet 
-            self.__player1bal -= self.__bet
-            if self.__bet > 0: # as the function is called multiple times it only increments the player turn once they click on the amount they want to raise not just the raise button
-                self.__playerTurn +=1
-                self.__hasRaised = 0
-
-        #self.__bet  = 0
-
-        print("Raise")
-
-    def handleFold(self):
-        print("Fold")
-        deck1.increaseCount() #this is used to change the cards in the deck class
-        print(deck1.getp1cards())
-        print(deck1.getaicards())  
-        print(deck1.getCommunityCards())
-        self.__playerTurn = 0  # resets to player1 going first
-        self.__player2bal += self.__pot  # as player2 won the value of the pot is added to their balance
-        self.__pot = 0 # the pot is then reset to 0 as it had been moved
-
     def aiturn(self):
-        if self.__playerTurn % 2 == 1:
-            self.__playerTurn+=1
-
-    def getPot(self):
-        return self.__pot
-
-    def getBet(self):
-        return self.__bet
+        if data1.getTurn() % 2 == 1:
+            data1.incrementTurn()
 
     def getTableCards(self):
         return self.__currentCards
@@ -135,9 +85,9 @@ class gameScreen:
         screen.blit(self.__font.render("Round: "+str(self.__round), True, white, green),(150+5,100+5)) # bilts the round number in the top left of the green rectangle
         
     def displayBalance(self):
-        screen.blit(self.__font.render(str(self.__player1bal), True, white, green),(450+22,412)) #blits the player 1 balance to tge screen
-        screen.blit(self.__font.render(str(self.__player2bal), True, white, green),(450+22,160)) #blits the player 2 balance to the screen
-        screen.blit(self.__font.render(str(self.__pot), True, white, green),(205,275))
+        screen.blit(self.__font.render(str(data1.getPlayer1bal()), True, white, green),(450+22,412)) #blits the player 1 balance to tge screen
+        screen.blit(self.__font.render(str(data1.getPlayer2bal()), True, white, green),(450+22,160)) #blits the player 2 balance to the screen
+        screen.blit(self.__font.render(str(data1.getPot()), True, white, green),(205,275))
 
     def displayPlayerCards(self):
         self.__font = font.Font('freesansbold.ttf',32) # choosing the font and size of the text
@@ -173,7 +123,7 @@ class gameScreen:
 
         while not stopped:
             #sets round number based off how many player turns have occured
-            self.__round = 1 + self.__playerTurn // 2
+            self.__round = 1 + data1.getTurn() // 2
             
 
             #sets up background
