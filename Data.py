@@ -2,7 +2,6 @@ class Data:
     def __init__(self):
         self.__pot = 0
         self.__bet = 0
-        self.__aibet = 0 
         self.__hasRaised = 0 
         self.__player1bal = 500
         self.__player2bal = 500
@@ -60,3 +59,8 @@ class Data:
     
     def getTurn(self):
         return self.__playerTurn
+
+    def incrementTurn(self):
+        self.__playerTurn+=1
+
+data1 = Data()
