@@ -1,14 +1,9 @@
 from format import *
 
 class AI:
-    def __init__(self,j):
-        self.__Cards = j
-        self.__eval = f1.getEval()
-
-        # dictionary to count repeating values and suits 
-
-    def getEval(self):
-        return self.__eval
+    def __init__(self,cards):
+        self.__Cards = cards
+        #self.__eval = f1.getEval()
 
     def findMostCommon(self,cards1):
         self.__multiple = False # If there are no repeating values, it should return the highest value
@@ -93,8 +88,10 @@ class AI:
 
             #print(self.findMostCommon(self.__Cards2))
 
-            if self.findMostCommon(self.__Cards2)[1] == 2: # if this new array has two cards with the same value
+            if self.findMostCommon(self.__Cards2)[1] >= 2: # if this new array has two cards with the same value
                 return -1, 4 # if must be a full house and the rank = 4
+            elif data1.getRound >= 4:
+                return -1, 7 # 3 of a kind if no more cards can be delt
             else:
                 return 3 * len(self.__Cards2), 4 # else they need this many outs for a full house
                 # maybe take into account if they want o get a 4 of a kind or not
@@ -108,17 +105,82 @@ class AI:
         elif 2 < self.__straight < 5: # if a straight is possible
             return (5 - self.__straight) * 4 , 6 # same rank
 
-        elif self.findMostCommon(self.__Cards)[3] > self.__common_value: # if there are more suits than values
-            return 13 - self.findMostCommon(self.__Cards)[3] # 13 cards with same suit
+        elif self.__common_value ==2:
+            self.__Cards3 = []
+            for item in self.__Cards:
+                if item[0] != self.findMostCommon(self.__Cards)[0]: # if the card is not the same value as the most common
+                    self.__Cards3.append(item)
+
+            if self.findMostCommon(self.__Cards3)[1] == 2:
+                return -1, 8
+            elif data1.getRound() >=4:
+                return -1, 9 
+            else:
+                return 3 * len(self.__Cards3), 8 
+
+        elif data1.getRound() >=4:
+            return -1, 10 # high card - worse ranking
+
         else:
-            return 4 - self.findMostCommon(self.__Cards)[1] # 4 cards with same value
+            return 0,11
 
-j = ["2C","2H","2S","JH","JC"]
-ai1 = AI(j)
-print(ai1.findOuts())
-print(j)
+    def getPotOdds(self):
+        self.__call = data1.getBet() # sets call value as previous players bet
+        self.__pot = data1.getPot() # gets pot odds 
 
-#print(ai1.getEval())
+        if self.__call == 0: # if the player hasnt bet the call bet is 0 
+            return 0
+        else:
+            return self.__call / (self.__pot) # odds of call compared to pot
+
+    def getCardOdds(self):
+        potential = 52 - ( len(f1.orderCards()) + 2 )  # sets number of potential cards which can be selected from
+        if self.findOuts()[0] == -1:
+            return 1.00
+        else: 
+            return (( self.findOuts()[0] ) / potential ) # finds odds using findOuts and the number of potential cards
+
+    def calculateBet(self):
+        f1.orderPair()
+        f1.formatCards()
+
+        self.__Cards = f1.orderCards()
+        self.__eval = f1.getEval()
+        self.__potval = self.getPotOdds() # sets attribute to pot odds
+        self.__cardval = self.getCardOdds()# sets attributes to card odds
+
+        print(self.__Cards , "cards")
+        print(self.__potval , "potval")
+        print(self.__cardval, "cardval")
+        print(self.findOuts())
+
+        if data1.getRound() == 1 or data1.getRound() == 0  : # if round is 0 use odds from cardeval.txt
+            if self.__eval < -0.1:
+                return 0 # if the eval is less than -0.1 set bet to 0 
+            elif self.__eval < 0.2 and self.__eval > -0.1: #  if the eval is greater than zero but less than 0.2,
+                return data1.getBet() # set the bet of the ai to equal the players bet
+            else: 
+                return round((data1.getBet() * (1.3 + self.__eval))/10) * 10 # adjusts the raised bet to be dependant on how good the pair is
+
+        else:
+            if self.__potval > self.__cardval: # if -ve val fold or set bet to 0 
+                return 0
+            elif self.__potval == self.__cardval:
+                return data1.getBet() # if the values are equal or if the pot value is only 5 smaller than cardval should call
+ 
+            elif self.__cardval > self.__potval:
+                #print(data1.getBet() * (1 + self.__cardval *  10), data1.getBet(), "bets")
+                return round ((data1.getBet()*( 1 + self.__cardval))/10) * 10
+                # adjusts raise value to be dependant on the card val
+            
+
+
+ai1 = AI(f1.orderCards())
+#print(f1.getCard())
+
+#print(ai1.calculateBet(), "b")
+
+
 
 # pair : 4 of a kind , one-overcard(unsuited) : 4 of a kind, straight possible (how many cards are in a 5 card range): straight
 # 2 pair : full house, 3 same card : full house / 4 of a kind,flush draw (how many of suit): flush 
