@@ -1,7 +1,6 @@
 # imports and initalise pygame
-from Data import *
+from a import *
 from pygame import *
-from cards import *
 init()
 
 #window infomation and sets up the screen
@@ -9,7 +8,7 @@ displayw = 1000
 displayh = 600
 screen = display.set_mode((displayw,displayh))
 
-# sets all the colours used in the progra
+# sets all the colours used in the program
 blue = (51, 102, 255)
 green = (10, 153, 10)
 white = (255, 255, 255)
@@ -26,9 +25,7 @@ class gameScreen:
     def __init__(self,displayw,displayh):
         # setting up display 
         self.__displayw = displayw
-        self.__displayh = displayh 
-
-        self.__currentCards = []
+        self.__displayh = displayh
         
     def handleMouse(self):
         if data1.getTurn() % 2 == 0: # only allow the buttons to work if its the players turn
@@ -40,7 +37,8 @@ class gameScreen:
                 data1.handleRaise()# if the person clicks the middle button it will do the raise function
 
             if 750 <= self.__mouse[0] <= 750+140 and 775 // 2 <= self.__mouse[1] <= 775 // 2+40: 
-                data1.handleFold() # if the person clicks the bottom button it will do the fold function
+                data1.handleFold("player") # if the person clicks the bottom button it will do the fold function
+                deck1.increaseCount()
 
             if 655 <= self.__mouse[0] <= 655 + 75 and 525 <= self.__mouse[1] <= 525 + 50: 
                 data1.setBet(25)
@@ -55,7 +53,7 @@ class gameScreen:
                 data1.handleRaise()
 
     def Button(self,x,y,text,x2,y2):
-        if data1.getTurn() % 2 == 0: # if its the players turn
+        if data1.getTurn() % 2 == 0 and data1.checkEnd() != True: # if its the players turn
             if x <= self.__mouse[0] <= x + x2 and y <= self.__mouse[1] < y + y2: # if the mouse is hovering over the button make the background colour of the button darker
                 draw.rect(screen, (150,150,150), [x , y, x2, y2])
                 draw.rect(screen, white, [x , y, x2, y2],2)
@@ -76,13 +74,19 @@ class gameScreen:
 
     def aiturn(self):
         if data1.getTurn() % 2 == 1:
-            data1.incrementTurn()
+            data1.setaibet(ai1.calculateBet())
+            #print(ai1.calculateBet())
 
-    def getTableCards(self):
-        return self.__currentCards
+            if data1.getaibet() == 0 and not data1.totalBet():
+                data1.handleFold("ai")
+                deck1.increaseCount()
+                #print("ai folded",)
+            else:
+                data1.handleAICall(data1.getaibet())
+
 
     def displayRound(self):
-        screen.blit(self.__font.render("Round: "+str(self.__round), True, white, green),(150+5,100+5)) # bilts the round number in the top left of the green rectangle
+        screen.blit(self.__font.render("Round: "+str(data1.getRound()), True, white, green),(150+5,100+5)) # bilts the round number in the top left of the green rectangle
         
     def displayBalance(self):
         screen.blit(self.__font.render(str(data1.getPlayer1bal()), True, white, green),(450+22,412)) #blits the player 1 balance to tge screen
@@ -103,19 +107,16 @@ class gameScreen:
         
     def displayTableCards(self):
         # uses the community cards from the cards.py file. displays them based on the round of the game
-        if self.__round >= 2:
+        if data1.getRound() >= 2:
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[0]), True, white, green),(330 + 28,275))
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[1]), True, white, green),(390 + 28,275))
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[2]), True, white, green),(450 + 28,275))
-            self.__currentCards = deck1.getCommunityCards()[:2]
         
-        if self.__round >= 3:
+        if data1.getRound() >= 3:
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[3]), True, white, green),(510 + 28,275))
-            self.__currentCards = deck1.getCommunityCards()[:3]
 
-        if self.__round >=4:
+        if data1.getRound() >=4:
             screen.blit(self.__font.render(str(deck1.getCommunityCards()[4]), True, white, green),(570 + 28,275))
-            self.__currentCards = deck1.getCommunityCards()[0:4]
 
     def main(self):
         #variable to control game loop
@@ -123,8 +124,7 @@ class gameScreen:
 
         while not stopped:
             #sets round number based off how many player turns have occured
-            self.__round = 1 + data1.getTurn() // 2
-            
+            data1.incrementRound(1 + data1.getTurn() // 2)
 
             #sets up background
             screen.fill(blue) #background colour
@@ -151,6 +151,7 @@ class gameScreen:
                 if e.type == KEYDOWN:  # simulate/skip ai turn as ai hasnt been developed yet
                     if e.key == K_1: # uses button 1
                         self.aiturn()
+
                     
             # uses the button function to make the 3 call, raise and fold buttons
             self.Button(750,163,'Call',150,50) 
