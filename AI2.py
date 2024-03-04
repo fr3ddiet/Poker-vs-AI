@@ -61,7 +61,7 @@ class AI:
             if abs(last - item) < 5: # if the current card is within a range of 5 values from the last card
                 self.__count2 +=1 # potential straight at the end of the array
 
-        if self.__count2 > self.__count: #whichever end has the the highest number of cards that could form a straight
+        if self.__count2 >= self.__count: #whichever end has the the highest number of cards that could form a straight
             return self.__cardvalues[-self.__count2:], self.__count2 # splice of array, last count2 elements
         else:
             return self.__cardvalues[:self.__count], self.__count # splice of array, first count elements
