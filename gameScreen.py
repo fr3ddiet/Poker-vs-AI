@@ -28,7 +28,7 @@ class gameScreen:
         self.__displayh = displayh
         
     def handleMouse(self):
-        if data1.getTurn() % 2 == 0: # only allow the buttons to work if its the players turn
+        if data1.getTurn() % 2 == 0 and data1.checkEnd() != True: # only allow the buttons to work if its the players turn
             if 750 <= self.__mouse[0] <= 750+140 and 325 // 2  <= self.__mouse[1] <= 325 // 2 + 40: 
                 data1.handleCall() # if the person clicks on the top botton it will do the call function
 
@@ -126,7 +126,7 @@ class gameScreen:
             #sets round number based off how many player turns have occured
             data1.incrementRound(1 + data1.getTurn() // 2)
 
-            #sets up background
+            #sets up background 
             screen.fill(blue) #background colour
             draw.rect(screen, green, Rect(150,100,700,400)) # draws green table
             draw.rect(screen, white, Rect(150,100,700,400),2) # white table outline
@@ -150,7 +150,7 @@ class gameScreen:
 
                 if e.type == KEYDOWN:  # simulate/skip ai turn as ai hasnt been developed yet
                     if e.key == K_1: # uses button 1
-                        self.aiturn()
+                        print("a")
 
                     
             # uses the button function to make the 3 call, raise and fold buttons
@@ -158,6 +158,7 @@ class gameScreen:
             self.Button(750,275,'Raise',150,50)
             self.Button(750,388,'Fold',150,50) 
             self.raiseButton()
+            self.aiturn()
 
             # sets the clock and updates the display
             clock.tick(60)
