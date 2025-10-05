@@ -75,14 +75,42 @@ class gameScreen:
     def aiturn(self):
         if data1.getTurn() % 2 == 1:
             data1.setaibet(ai1.calculateBet())
-            #print(ai1.calculateBet())
-
+ 
             if data1.getaibet() == 0 and not data1.totalBet():
                 data1.handleFold("ai")
                 deck1.increaseCount()
-                #print("ai folded",)
+                print("ai folded",)
             else:
                 data1.handleAICall(data1.getaibet())
+            
+
+    
+    def checkWin(self):
+        if data1.getRound() == 5:
+            #print("A")
+            time.wait(1000) # waits a second before the game ends
+            ai = ai1.findOuts(f1.orderCards()) # ai card hand value is findOuts[1]
+            p1 = pl1.findOuts(playerf2.orderCards()) # user card hand value is findOuts[1]
+            print(f1.orderCards(),playerf2.orderCards()) # prints ai cards then players
+            print(ai,p1) # prints ai value then user value
+
+            if ai[0] == -1 and p1[0] == -1:
+                if ai[1] < p1[1]:
+                    data1.handleFold("player")
+                    print('ai win')
+                else:
+                    data1.handleFold("ai")
+                    print('user win') 
+
+            elif ai[0] == -1:
+                data1.handleFold("player")
+                print('ai win')
+
+            elif p1[0] == -1:
+                data1.handleFold("ai")
+                print('user win')
+
+            deck1.increaseCount()
 
 
     def displayRound(self):
@@ -148,7 +176,7 @@ class gameScreen:
                 if e.type == MOUSEBUTTONDOWN: # if they left click the mouse
                     self.handleMouse()
 
-                if e.type == KEYDOWN:  # simulate/skip ai turn as ai hasnt been developed yet
+                if e.type == KEYDOWN:  # 
                     if e.key == K_1: # uses button 1
                         print("a")
 
@@ -156,9 +184,13 @@ class gameScreen:
             # uses the button function to make the 3 call, raise and fold buttons
             self.Button(750,163,'Call',150,50) 
             self.Button(750,275,'Raise',150,50)
-            self.Button(750,388,'Fold',150,50) 
+            self.Button(750,388,'Fold',150,50)
+
             self.raiseButton()
             self.aiturn()
+
+
+            self.checkWin()
 
             # sets the clock and updates the display
             clock.tick(60)
