@@ -2,13 +2,13 @@ from cards import *
 from Data import *
 
 class Format: 
-    def __init__(self,filename,mode): #Sets up constructor with filename and mode it will be opened with
+    def __init__(self,filename,mode,pair): #Sets up constructor with filename and mode it will be opened with
         self.__file = open(filename,mode)  # gets the ai's cards from the cards class
-        self.__pairhand = deck1.getaicards()
+        self.__pairhand = pair
         self.__allcards = self.setCommunityCards() + self.__pairhand
     
     def setCommunityCards(self):
-        d = {0 : 0, 1 : 0 ,2 : 3, 3 : 4, 4: 5, 5 : 5}
+        d = {0 : 0, 1 : 0 ,2 : 3, 3 : 4, 4: 5, 5 : 5,}
         num = d[data1.getRound()]
         return deck1.getCommunityCards()[0 : num]
             
@@ -28,7 +28,6 @@ class Format:
         return self.__allcards
 
     def orderPair(self):
-        self.__pairhand = deck1.getaicards()
         self.__pairhand.sort(key=self.cardRankKey) # sorts the 2 cards using the key
         return self.__pairhand
 
@@ -52,16 +51,11 @@ class Format:
                 self.__next = True # the next line is the evalutation for the card
             elif self.__next:
                 return float(line[:-1]) 
-                
-
-
 
 
 #Create object of class and define file name and type
+f1 = Format('cardeval.txt',"r",deck1.getaicards())
 
-f1 = Format('cardeval.txt',"r")
-
-#f1.setpair()
-#print(f1.getCard())
-#print(f1.orderCards())
+#print(deck1.getaicards())
 #print(f1.getEval()) # return the eval of the 2 cards.
+playerf2 = Format('cardeval.txt', 'r', deck1.getp1cards())
