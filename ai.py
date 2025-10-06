@@ -3,7 +3,10 @@ from format import *
 class AI:
     def __init__(self,cards):
         self.__Cards = cards
-        #self.__eval = f1.getEval()
+        self.__Cards2 = []
+        self.__Cards3 = []
+        self.__common_value = 0
+        self.__straight = 0
 
     def findMostCommon(self,cards1):
         self.__multiple = False # If there are no repeating values, it should return the highest value
@@ -25,10 +28,10 @@ class AI:
             else:
                 self.__suit_count[suit] = 1
 
-        if self.__multiple == False:
-            max_value = list(self.__value_count.keys())[-1] # last value as its largest
-        else:
-            max_value = max(self.__value_count, key = self.__value_count.get) # 
+        #if self.__multiple == False:
+         #   max_value = list(self.__value_count.keys())[-1] # last value as its largest
+        #else:
+        max_value = max(self.__value_count, key = self.__value_count.get) # 
             #get method returns the dictionary value which is assosiated with the key.
             #max method then returns the largest dictionary value
 
@@ -67,9 +70,14 @@ class AI:
             return self.__cardvalues[:self.__count], self.__count # splice of array, first count elements
 
 
-    def findOuts(self):
+    def findOuts(self,cards):
+        self.__Cards = cards
+
         self.__common_value = self.findMostCommon(self.__Cards)[1]
         self.__straight = self.calculateStraight()[1]
+
+        #print(self.__Cards, "cards")
+        #print(self.__straight)
 
         if self.findMostCommon(self.__Cards)[3] == 5 and self.calculateStraight()[1] == 5: # straight flush
             if self.calculateStraight()[0] == [10,11,12,13,14]: #royal flush rank = 1
@@ -80,17 +88,18 @@ class AI:
         elif self.__common_value == 4: # 4 of a kind, rank = 3
             return -1, 3 # outs are -1 because theyre are no cards to improve this hand
         
+    
         elif self.__common_value == 3: # this is checking for if the hand is a 'full house' or just 3 of a kind
             self.__Cards2 = [] #a full house is a 3 of a kind and a 2 of a kind
             for item in self.__Cards: # loop over each card
                 if item[0] != self.findMostCommon(self.__Cards)[0]: # if the card is not the same value as the most common
                     self.__Cards2.append(item) # adds it to a new array
 
-            #print(self.findMostCommon(self.__Cards2))
+            self.findMostCommon(self.__Cards2)
 
             if self.findMostCommon(self.__Cards2)[1] >= 2: # if this new array has two cards with the same value
                 return -1, 4 # if must be a full house and the rank = 4
-            elif data1.getRound >= 4:
+            elif data1.getRound() >= 4:
                 return -1, 7 # 3 of a kind if no more cards can be delt
             else:
                 return 3 * len(self.__Cards2), 4 # else they need this many outs for a full house
@@ -102,25 +111,29 @@ class AI:
         elif self.__straight == 5: # straight rank = 6
             return -1, 6
 
-        elif 2 < self.__straight < 5: # if a straight is possible
+        elif 2 < self.__straight < 5 and self.__straight >= (5 - data1.getRound()) and data1.getRound() < 4: # if a straight is possible
             return (5 - self.__straight) * 4 , 6 # same rank
 
-        elif self.__common_value ==2:
+        elif self.__common_value == 2:
+            print("2")
             self.__Cards3 = []
             for item in self.__Cards:
                 if item[0] != self.findMostCommon(self.__Cards)[0]: # if the card is not the same value as the most common
                     self.__Cards3.append(item)
 
+            self.findMostCommon(self.__Cards3)
+
             if self.findMostCommon(self.__Cards3)[1] == 2:
-                return -1, 8
-            elif data1.getRound() >=4:
+                return -1, 8 # two pair
+            elif self.findMostCommon(self.__Cards3)[1] == 2 and data1.getRound() < 4:
+                return 3 * len(self.__Cards3), 8 
+            elif self.findMostCommon(self.__Cards3)[1] != 2:
                 return -1, 9 
             else:
-                return 3 * len(self.__Cards3), 8 
+                return 3 * len(self.__Cards3) , 9
 
         elif data1.getRound() >=4:
             return -1, 10 # high card - worse ranking
-
         else:
             return 0,11
 
@@ -135,24 +148,23 @@ class AI:
 
     def getCardOdds(self):
         potential = 52 - ( len(f1.orderCards()) + 2 )  # sets number of potential cards which can be selected from
-        if self.findOuts()[0] == -1:
+        if self.findOuts(f1.orderCards())[0] == -1:
             return 1.00
         else: 
-            return (( self.findOuts()[0] ) / potential ) # finds odds using findOuts and the number of potential cards
+            return (( self.findOuts(f1.orderCards())[0] ) / potential ) # finds odds using findOuts and the number of potential cards
 
     def calculateBet(self):
         f1.orderPair()
         f1.formatCards()
 
-        self.__Cards = f1.orderCards()
         self.__eval = f1.getEval()
         self.__potval = self.getPotOdds() # sets attribute to pot odds
         self.__cardval = self.getCardOdds()# sets attributes to card odds
 
-        print(self.__Cards , "cards")
-        print(self.__potval , "potval")
-        print(self.__cardval, "cardval")
-        print(self.findOuts())
+        #print(self.__Cards , "cards")
+        #print(self.__potval , "potval")
+        #print(self.__cardval, "cardval")
+        #print(self.findOuts())
 
         if data1.getRound() == 1 or data1.getRound() == 0  : # if round is 0 use odds from cardeval.txt
             if self.__eval < -0.1:
@@ -176,12 +188,4 @@ class AI:
 
 
 ai1 = AI(f1.orderCards())
-#print(f1.getCard())
-
-#print(ai1.calculateBet(), "b")
-
-
-
-# pair : 4 of a kind , one-overcard(unsuited) : 4 of a kind, straight possible (how many cards are in a 5 card range): straight
-# 2 pair : full house, 3 same card : full house / 4 of a kind,flush draw (how many of suit): flush 
-# straight and flush possible : straight flush 
+pl1 = AI(playerf2.orderCards())
