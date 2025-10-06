@@ -1,5 +1,5 @@
 # imports and initalise pygame
-from a import *
+from ai import *
 from pygame import *
 init()
 
