@@ -27,6 +27,11 @@ class GameScreen:
         self.__display_width = display_width
         self.__display_height = display_height
 
+        self.__ai_formatter = Format('cardeval.txt',"r",deck.get_ai_cards())
+        self.__player_formatter = Format('cardeval.txt','r',deck.get_p1_cards())
+        self.__ai_player = AI(self.__ai_formatter.order_cards(),self.__ai_formatter)
+        self.__human_player = AI(self.__player_formatter.order_cards(),self.__player_formatter)
+
     def handle_mouse(self):
         if data.get_turn() % 2 == 0 and data.check_end() != True: # only allow the buttons to work if its the players turn
             if 750 <= self.__mouse[0] <= 750+140 and 325 // 2  <= self.__mouse[1] <= 325 // 2 + 40:
@@ -74,7 +79,7 @@ class GameScreen:
 
     def ai_turn(self):
         if data.get_turn() % 2 == 1:
-            data.set_ai_bet(ai_player.calculate_bet())
+            data.set_ai_bet(self.__ai_player.calculate_bet())
 
             if data.get_ai_bet() == 0 and not data.total_bet():
                 data.handle_fold("ai")
@@ -89,9 +94,9 @@ class GameScreen:
         if data.get_round() == 5:
             #print("A")
             time.wait(1000) # waits a second before the game ends
-            ai = ai_player.find_outs(ai_formatter.order_cards()) # ai card hand value is findOuts[1]
-            p1 = human_player.find_outs(player_formatter.order_cards()) # user card hand value is findOuts[1]
-            print(ai_formatter.order_cards(),player_formatter.order_cards()) # prints ai cards then players
+            ai = self.__ai_player.find_outs(self.__ai_formatter.order_cards()) # ai card hand value is findOuts[1]
+            p1 = self.__human_player.find_outs(self.__player_formatter.order_cards()) # user card hand value is findOuts[1]
+            print(self.__ai_formatter.order_cards(),self.__player_formatter.order_cards()) # prints ai cards then players
             print(ai,p1) # prints ai value then user value
 
             if ai[0] == -1 and p1[0] == -1:

@@ -51,11 +51,3 @@ class Format:
                 self.__next_line_is_eval = True # the next line is the evalutation for the card
             elif self.__next_line_is_eval:
                 return float(line[:-1])
-
-
-#Create object of class and define file name and type
-ai_formatter = Format('cardeval.txt',"r",deck.get_ai_cards())
-
-#print(deck.get_ai_cards())
-#print(ai_formatter.get_eval()) # return the eval of the 2 cards.
-player_formatter = Format('cardeval.txt', 'r', deck.get_p1_cards())

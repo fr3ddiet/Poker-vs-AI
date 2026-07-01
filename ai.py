@@ -1,8 +1,9 @@
 from format import *
 
 class AI:
-    def __init__(self,cards):
+    def __init__(self,cards,formatter):
         self.__cards = cards
+        self.__formatter = formatter
         self.__cards_without_triple = []
         self.__cards_without_pair = []
         self.__common_value = 0
@@ -147,17 +148,18 @@ class AI:
             return self.__call / (self.__pot) # odds of call compared to pot
 
     def get_card_odds(self):
-        potential = 52 - ( len(ai_formatter.order_cards()) + 2 )  # sets number of potential cards which can be selected from
-        if self.find_outs(ai_formatter.order_cards())[0] == -1:
+        cards = self.__formatter.order_cards()
+        potential = 52 - ( len(cards) + 2 )  # sets number of potential cards which can be selected from
+        if self.find_outs(cards)[0] == -1:
             return 1.00
         else:
-            return (( self.find_outs(ai_formatter.order_cards())[0] ) / potential ) # finds odds using findOuts and the number of potential cards
+            return (( self.find_outs(cards)[0] ) / potential ) # finds odds using findOuts and the number of potential cards
 
     def calculate_bet(self):
-        ai_formatter.order_pair()
-        ai_formatter.format_cards()
+        self.__formatter.order_pair()
+        self.__formatter.format_cards()
 
-        self.__hand_eval = ai_formatter.get_eval()
+        self.__hand_eval = self.__formatter.get_eval()
         self.__pot_odds = self.get_pot_odds() # sets attribute to pot odds
         self.__card_odds = self.get_card_odds()# sets attributes to card odds
 
@@ -184,8 +186,3 @@ class AI:
                 #print(data.get_bet() * (1 + self.__card_odds *  10), data.get_bet(), "bets")
                 return round ((data.get_bet()*( 1 + self.__card_odds))/10) * 10
                 # adjusts raise value to be dependant on the card val
-
-
-
-ai_player = AI(ai_formatter.order_cards())
-human_player = AI(player_formatter.order_cards())
