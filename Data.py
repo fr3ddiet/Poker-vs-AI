@@ -74,7 +74,7 @@ class Data:
             return True
         else:
             return False
-    
+     
     def getRaised(self):
         return self.__hasRaised
 
@@ -83,7 +83,7 @@ class Data:
 
     def getaibet(self):
         return self.__aibet
-    
+     
     def setBet(self,value):
         self.__bet = value
 
@@ -92,13 +92,13 @@ class Data:
 
     def getPlayer1bal(self):
         return self.__player1bal
-    
+     
     def getPlayer2bal(self):
         return self.__player2bal
-    
+     
     def getPot(self):
         return self.__pot
-    
+     
     def getTurn(self):
         return self.__playerTurn
 
@@ -112,8 +112,6 @@ class Data:
         self.__round = value
 
     def checkEnd(self):
-        while self.__round > 4:
-            if self.__bet == self.__aibet:
-                return True
+        return self.__round > 4 and self.__bet == self.__aibet
 
 data1 = Data()
