@@ -26,7 +26,7 @@ pip install pygame
 Run the game:
 
 ```bash
-python gameScreen.py
+python game_screen.py
 ```
 
 ## Project Status

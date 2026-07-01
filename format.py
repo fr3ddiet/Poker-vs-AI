@@ -1,5 +1,5 @@
 from cards import *
-from Data import *
+from data import *
 
 class Format:
     def __init__(self,filename,mode,pair): #Sets up constructor with filename and mode it will be opened with
