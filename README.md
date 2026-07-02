@@ -26,9 +26,9 @@ pip install pygame
 Run the game:
 
 ```bash
-python gameScreen.py
+python game_screen.py
 ```
 
 ## Project Status
 
-This project is being refactored to improve maintainability, readability, and structure while preserving the original gameplay logic.
+This project has being refactored to improve maintainability, readability, and structure while preserving the original gameplay logic.
