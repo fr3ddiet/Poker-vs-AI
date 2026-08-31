@@ -1,34 +1,35 @@
 # Poker vs AI
 
-A Python/Pygame poker game where the player competes against a simple AI opponent. The AI uses starting-hand evaluation, pot odds, card odds, and hand-strength checks to decide whether to call, raise, or fold.
+A Python/Pygame poker-style game where the player competes against a rules-based AI opponent. The AI uses starting-hand evaluation, pot odds, estimated card odds and hand-strength checks to decide whether to call, raise or fold.
 
 ## Features
 
-- Playable poker-style game loop with player and AI turns
-- Pygame interface with call, raise, and fold actions
-- Deck generation, shuffling, dealing, and community cards
-- AI betting decisions based on hand evaluation and odds
-- Starting-hand lookup from `cardeval.txt`
+- Playable game loop with player and AI turns
+- Pygame interface with call, raise and fold actions
+- Shuffled 52-card deck, community cards and betting rounds
+- Pre-flop decisions based on a starting-hand lookup
+- Post-flop decisions based on pot odds, estimated card odds and hand strength
+- Hand evaluation from high card through to royal flush
 
-## Tech Stack
+## Requirements
 
-- Python
+- Python 3
 - Pygame
 
-## How to Run
+## How to run
 
-Install Pygame:
+Install the dependency:
 
 ```bash
-pip install pygame
+pip install -r requirements.txt
 ```
 
-Run the game:
+Start the game:
 
 ```bash
 python game_screen.py
 ```
 
-## Project Status
+## Project structure
 
-This project has being refactored to improve maintainability, readability, and structure while preserving the original gameplay logic.
+The code is split into modules for the Pygame interface, AI decision logic, card and deck handling, formatting and game data. It has been refactored to improve maintainability and readability while preserving the original gameplay logic.
